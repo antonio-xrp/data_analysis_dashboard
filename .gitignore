@@ -67,6 +67,6 @@ target/
 # ipynb checkpoints
 .ipynb_checkpoints
 
-projects/proyecto_01/data/raw/
+projects/0.1_ejecucion_presupuesto/data/raw/
 projects/proyecto_02/data/raw/
 projects/proyecto_03/data/raw/
