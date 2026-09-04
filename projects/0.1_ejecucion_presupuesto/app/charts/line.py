@@ -72,7 +72,9 @@ def crear_line_chart(
     if df.empty:
         raise ValueError("El DataFrame está vacío.")
 
+    #preguntamos si y es tipo str, si es true converite [] y si no es list()
     y_columns = [y] if isinstance(y, str) else list(y)
+
 
     required_columns = [x, *y_columns]
 

@@ -14,7 +14,7 @@ def filtrar_presupuesto(
     ].copy()
 
     if distrito != "Todas":
-        df = df[df["EJECUTORA_NOMBRE"] == distrito]
+        df = df[df["DISTRITO_EJECUTORA_NOMBRE"] == distrito]
 
     return df
 
@@ -34,7 +34,7 @@ def filtrar_ejecucion(
     ].copy()
 
     if distrito != "Todas":
-        df = df[df["EJECUTORA_NOMBRE"] == distrito]
+        df = df[df["DISTRITO_EJECUTORA_NOMBRE"] == distrito]
 
     return df
 
@@ -84,3 +84,41 @@ def calcular_kpis(
         "ejecucion": ejecucion_pct,
         "saldo": saldo,
     }
+
+
+def agrupar_ejecucion(
+    presupuesto: pd.DataFrame, 
+    ejecucion: pd.DataFrame
+    ) -> pd.DataFrame:
+
+    df = presupuesto.merge(
+        ejecucion,
+        on=[
+            "ANO_EJE",
+            "DEPARTAMENTO_EJECUTORA_NOMBRE",
+            "PROVINCIA_EJECUTORA_NOMBRE",
+            "DISTRITO_EJECUTORA_NOMBRE",
+            ],
+        how="inner"
+    )
+
+    df = (
+        df
+        .groupby([
+            "ANO_EJE",
+            "DISTRITO_EJECUTORA_NOMBRE",
+            "MONTO_PIA",
+            "MONTO_PIM"])["MONTO_DEVENGADO"]
+        .sum()
+        .reset_index())
+
+    df["EJECUCION_%"] = (
+        df["MONTO_DEVENGADO"]/ 
+        df["MONTO_PIM"]) * 100
+
+    df = df.sort_values(
+        "EJECUCION_%",
+        ascending=True,
+    )
+    return df   
+
