@@ -114,10 +114,6 @@ ejecucion_filtrada = filtrar_ejecucion(
     mes=mes,
 )
 
-evolucion = preparar_evolucion(
-    ejecucion_filtrada
-)
-
 # FILTRO PRESUPUESTO
 
 kpis = calcular_kpis(

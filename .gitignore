@@ -70,3 +70,7 @@ target/
 projects/0.1_ejecucion_presupuesto/data/raw/
 projects/proyecto_02/data/raw/
 projects/proyecto_03/data/raw/
+
+
+# archivos del sistema
+.DS_Store
