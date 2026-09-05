@@ -6,10 +6,8 @@ from pathlib import Path
 
 from utils.data import load_data
 from utils.format import formato_monto
-from utils.format import nombre_mes
 
 
-from charts.evolucion import mostrar_evolucion_lineal
 from charts.line import crear_line_chart
 from charts.bar import crear_bar_chart
 
