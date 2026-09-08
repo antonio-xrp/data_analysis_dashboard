@@ -67,9 +67,14 @@ target/
 # ipynb checkpoints
 .ipynb_checkpoints
 
+# Datasets Parquet
+*.parquet
+
 projects/0.1_ejecucion_presupuesto/data/raw/
 projects/proyecto_02/data/raw/
 projects/proyecto_03/data/raw/
+# projects/proyecto_03/notebooks/mef_2026_clean.parquet/
+# projects/proyecto_03/notebooks/mef_2026.parquet/
 
 
 # archivos del sistema

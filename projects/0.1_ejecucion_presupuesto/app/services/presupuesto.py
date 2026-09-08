@@ -5,13 +5,15 @@ def filtrar_presupuesto(
     presupuesto: pd.DataFrame,
     departamento: str,
     provincia: str,
-    distrito: str | None = None,
+    distrito: str = "Todas",
 ) -> pd.DataFrame:
 
     df = presupuesto[
-        (presupuesto["DEPARTAMENTO_EJECUTORA_NOMBRE"] == departamento)
-        & (presupuesto["PROVINCIA_EJECUTORA_NOMBRE"] == provincia)
+        presupuesto["DEPARTAMENTO_EJECUTORA_NOMBRE"] == departamento
     ].copy()
+
+    if provincia != "Todas":
+        df = df[df["PROVINCIA_EJECUTORA_NOMBRE"] == provincia]
 
     if distrito != "Todas":
         df = df[df["DISTRITO_EJECUTORA_NOMBRE"] == distrito]
@@ -29,9 +31,11 @@ def filtrar_ejecucion(
 
     df = ejecucion[
         (ejecucion["DEPARTAMENTO_EJECUTORA_NOMBRE"] == departamento)
-        & (ejecucion["PROVINCIA_EJECUTORA_NOMBRE"] == provincia)
         & (ejecucion["MES_EJE"] <= mes)
     ].copy()
+
+    if provincia != "Todas":
+        df = df[df["PROVINCIA_EJECUTORA_NOMBRE"] == provincia]
 
     if distrito != "Todas":
         df = df[df["DISTRITO_EJECUTORA_NOMBRE"] == distrito]

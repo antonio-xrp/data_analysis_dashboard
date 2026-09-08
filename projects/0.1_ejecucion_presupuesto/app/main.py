@@ -4,9 +4,11 @@ import pandas as pd
 
 from pathlib import Path
 
+from components.kpi import render_kpi
+from utils.styles import load_css
+
 from utils.data import load_data
 from utils.format import formato_monto
-
 
 from charts.line import crear_line_chart
 from charts.bar import crear_bar_chart
@@ -27,10 +29,14 @@ st.set_page_config(
     layout="wide",
 )
 
+
 # RUTAS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+APP_DIR = BASE_DIR / "app"
+
 DATA_DIR = BASE_DIR / "data" / "processed"
+load_css(APP_DIR / "styles" / "kpi.css")
 
 # CARGA DE DATOS
 
@@ -39,7 +45,7 @@ presupuesto, ejecucion_mensual = load_data(DATA_DIR)
 
 # TITULO
 
-st.title("PRESUPUESTO Y EJECUCIÓN MUNICIPALIDADES DISTRITALES 📊")
+st.title("PRESUPUESTO Y EJECUCIÓN - GOBIERNOS LOCALES - MUNICIPALIDADES 📊")
 st.caption("Análisis de presupuesto y ejecución presupuestal")
 
 # FILTROS
@@ -66,7 +72,7 @@ with col2:
 
     provincia = st.selectbox(
         "Provincia",
-        provincias
+        ["Todas"] + provincias
     )
 
 with col3:
@@ -122,29 +128,59 @@ kpis = calcular_kpis(
 
 # SHOW KPIS
 
-kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
+kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5, gap="medium")
 
 with kpi1:
-    st.metric("PIA", formato_monto(kpis["pia"]))
 
-with kpi2:
-    st.metric("PIM", formato_monto(kpis["pim"]))
-
-with kpi3:
-    st.metric("DEVENGADO", formato_monto(kpis["devengado"]))
-
-with kpi4:
-    st.metric(
-        "EJECUCIÓN",
-        "N/D"
-        if kpis["ejecucion"] is None
-        else f'{kpis["ejecucion"]:.2f}%'
+    render_kpi(
+        title="Presupuesto Inicial - PIA",
+        value=formato_monto(kpis["pia"]),
+        icon="💰",
+        variant="blue"
     )
 
+
+with kpi2:
+
+    render_kpi(
+        title="Presupuesto Modificado - PIM",
+        value=formato_monto(kpis["pim"]),
+        icon="📊",
+        variant="purple"
+    )
+
+
+with kpi3:
+
+    render_kpi(
+        title="Gasto Ejecutado - Devengado",
+        value=formato_monto(kpis["devengado"]),
+        icon="💸",
+        variant="red"
+    )
+
+
+with kpi4:
+
+    render_kpi(
+        title="Ejecución",
+        value=(
+            "N/D"
+            if kpis["ejecucion"] is None
+            else f'{kpis["ejecucion"]:.2f}%'
+        ),
+        icon="📈",
+        variant="green"
+    )
+
+
 with kpi5:
-    st.metric(
-        "SALDO PENDIENTE",
-        formato_monto(kpis["saldo"])
+
+    render_kpi(
+        title="Saldo Pendiente",
+        value=formato_monto(kpis["saldo"]),
+        icon="⏳",
+        variant="orange"
     )
 
 # GRAFICOS LINEAL - EVOLUCION ACUMULADA DEVENGADOS
